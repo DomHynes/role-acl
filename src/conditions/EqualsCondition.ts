@@ -24,7 +24,7 @@ export class EqualsCondition implements IConditionFunction {
         }
 
         return Object.keys(args).every((key) => {
-            return CommonUtil.matchesAnyElement(args[key], (elm) => { return elm === context[key] });
+            return CommonUtil.matchesAnyElement(CommonUtil.compareToContextOrArgs(key, context, args), (elm) => { return elm === context[key] });
         });
     }
 }

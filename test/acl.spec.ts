@@ -1061,4 +1061,26 @@ describe('Test Suite: Access Control', function () {
 
         // console.log(JSON.stringify(ac.getGrants(), null, "  "));
     });
+
+    it('should allow for equals to compare context values with the $$ signifier', function() {
+        let ac = this.ac;
+        ac.grant('user')
+            .action('update')
+            .resource('user')
+            .condition({ Fn: 'EQUALS', args: { target: '$$requestor' } })
+            .commit();
+
+            expect(ac.can(['user']).context({requestor: '1', target: '1'}).execute('update').on('user').granted).toEqual(true)
+    })
+
+    it('should not grant access if the key in context does not match', function() {
+        let ac = this.ac;
+        ac.grant('user')
+            .action('update')
+            .resource('user')
+            .condition({ Fn: 'EQUALS', args: { target: '$$requestor' } })
+            .commit();
+
+            expect(ac.can(['user']).context({requestor: '1', target: '2'}).execute('update').on('user').granted).toEqual(false)
+    })
 });

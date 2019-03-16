@@ -357,4 +357,8 @@ export class CommonUtil {
         });
     }
 
+    public static compareToContextOrArgs(key: any, context: object, args: object) {
+        return typeof args[key] === 'string' && args[key].startsWith('$$') ? context[args[key].substring(2)] : args[key]
+    }
+
 }
